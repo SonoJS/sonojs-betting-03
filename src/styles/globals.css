@@ -1,0 +1,436 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* ------------------------------------------------------------------ */
+/*  Custom variants used by the shared Base UI primitives              */
+/* ------------------------------------------------------------------ */
+
+@custom-variant dark (&:is(.dark *));
+
+@custom-variant data-open {
+  &:where([data-state="open"]),
+  &:where([data-open]:not([data-open="false"])) {
+    @slot;
+  }
+}
+@custom-variant data-closed {
+  &:where([data-state="closed"]),
+  &:where([data-closed]:not([data-closed="false"])) {
+    @slot;
+  }
+}
+@custom-variant data-checked {
+  &:where([data-state="checked"]),
+  &:where([data-checked]:not([data-checked="false"])) {
+    @slot;
+  }
+}
+@custom-variant data-unchecked {
+  &:where([data-state="unchecked"]),
+  &:where([data-unchecked]:not([data-unchecked="false"])) {
+    @slot;
+  }
+}
+@custom-variant data-selected {
+  &:where([data-selected="true"]) {
+    @slot;
+  }
+}
+@custom-variant data-disabled {
+  &:where([data-disabled="true"]),
+  &:where([data-disabled]:not([data-disabled="false"])) {
+    @slot;
+  }
+}
+@custom-variant data-active {
+  &:where([data-state="active"]),
+  &:where([data-active]:not([data-active="false"])) {
+    @slot;
+  }
+}
+@custom-variant data-horizontal {
+  &:where([data-orientation="horizontal"]) {
+    @slot;
+  }
+}
+@custom-variant data-vertical {
+  &:where([data-orientation="vertical"]) {
+    @slot;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Tailwind theme mapping — utilities read concept-scoped CSS vars    */
+/* ------------------------------------------------------------------ */
+
+@theme inline {
+  --font-sans: var(--font-family);
+
+  /* editable semantic tokens */
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-foreground: var(--text-primary);
+  --color-muted-foreground: var(--text-secondary);
+  --color-border: var(--border);
+
+  /* derived tokens */
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-active: var(--primary-active);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary-hover: var(--secondary-hover);
+  --color-accent-hover: var(--accent-hover);
+  --color-surface-hover: var(--surface-hover);
+  --color-surface-active: var(--surface-active);
+  --color-border-strong: var(--border-strong);
+  --color-border-active: var(--border-active);
+  --color-ring: var(--focus-ring);
+  --color-foreground-muted: var(--text-muted);
+  --color-foreground-disabled: var(--text-disabled);
+  --color-overlay: var(--overlay);
+
+  /* fixed per concept status colors */
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+  --color-info: var(--info);
+
+  /* shadcn primitive aliases → semantic tokens */
+  --color-card: var(--surface-elevated);
+  --color-card-foreground: var(--text-primary);
+  --color-popover: var(--surface-elevated);
+  --color-popover-foreground: var(--text-primary);
+  --color-muted: var(--surface-hover);
+  --color-secondary-foreground: var(--text-primary);
+  --color-accent-foreground: var(--text-primary);
+  --color-input: var(--border);
+  --color-destructive: var(--error);
+
+  /* concept radius scale */
+  --radius-xs: var(--r-xs);
+  --radius-sm: var(--r-sm);
+  --radius-md: var(--r-md);
+  --radius-lg: var(--r-lg);
+  --radius-xl: var(--r-xl);
+  --radius-2xl: calc(var(--r-xl) * 1.5);
+  --radius-3xl: calc(var(--r-xl) * 2);
+  --radius-4xl: 9999px;
+
+  /* motion */
+  --ease-out-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-toggle: cubic-bezier(0.4, 0, 0.2, 1);
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--accordion-panel-height, auto);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--accordion-panel-height, auto);
+    }
+    to {
+      height: 0;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Z-index scale (06 §13.5)                                           */
+/* ------------------------------------------------------------------ */
+
+@utility z-sticky {
+  z-index: 20;
+}
+@utility z-header {
+  z-index: 30;
+}
+@utility z-bottom-nav {
+  z-index: 30;
+}
+@utility z-popover {
+  z-index: 50;
+}
+@utility z-sheet {
+  z-index: 60;
+}
+@utility z-dialog {
+  z-index: 70;
+}
+@utility z-toast {
+  z-index: 80;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Type roles (05 §9) — `type-*` (not `text-*`) so class merging never  */
+/*  confuses them with text colors.                                    */
+/* ------------------------------------------------------------------ */
+
+@utility type-display {
+  font-size: var(--fs-display);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+@utility type-h1 {
+  font-size: var(--fs-h1);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+@utility type-h2 {
+  font-size: var(--fs-h2);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+@utility type-section {
+  font-size: var(--fs-section);
+  line-height: 1.25;
+}
+@utility type-body {
+  font-size: var(--fs-body);
+  line-height: 1.5;
+}
+@utility type-label {
+  font-size: var(--fs-label);
+  line-height: 1.4;
+}
+@utility type-caption {
+  font-size: var(--fs-caption);
+  line-height: 1.35;
+}
+
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Editable palettes — defaults per concept (05 §4)                   */
+/*  Theme Studio overrides these as inline custom properties on the    */
+/*  concept root; derived tokens below recompute automatically.        */
+/* ------------------------------------------------------------------ */
+
+:root {
+  --background: #07090f;
+  --surface: #10131a;
+  --surface-elevated: #171b24;
+  --primary: #5b8cff;
+  --secondary: #7a8aa0;
+  --accent: #d4895a;
+  --text-primary: #f0f2f7;
+  --text-secondary: #9aa3b2;
+  --border: #252b36;
+  --primary-foreground: #07090f;
+
+  --success: #4ec9a0;
+  --warning: #e0b25a;
+  --error: #e06b6b;
+
+  --ink-dark: #07090f;
+  --info: #6aa0d8;
+
+  --font-family: "Inter Variable", Inter, ui-sans-serif, system-ui, sans-serif;
+
+  --r-xs: 4px;
+  --r-sm: 6px;
+  --r-md: 8px;
+  --r-lg: 10px;
+  --r-xl: 12px;
+
+  --header-h: 60px;
+  --tabs-h: 48px;
+  --control-h: 38px;
+  --control-h-sm: 30px;
+  --control-h-lg: 44px;
+  --shell-pad: 28px;
+  --section-gap: 36px;
+  --rail-gap: 14px;
+  --card-w: 220px;
+  --content-max: 1440px;
+  --bottom-nav-h: 64px;
+
+  --motion-fast: 140ms;
+  --motion-standard: 220ms;
+  --motion-slow: 360ms;
+
+  --fs-display: clamp(2rem, 1.5rem + 1.6vw, 2.75rem);
+  --fs-h1: clamp(1.625rem, 1.35rem + 1vw, 2.25rem);
+  --fs-h2: clamp(1.25rem, 1.1rem + 0.5vw, 1.625rem);
+  --fs-section: 1.125rem;
+  --fs-body: 0.9375rem;
+  --fs-label: 0.8125rem;
+  --fs-caption: 0.6875rem;
+}
+
+[data-concept="concept-03"] {
+  --background: #07090f;
+  --surface: #10131a;
+  --surface-elevated: #171b24;
+  --primary: #5b8cff;
+  --secondary: #7a8aa0;
+  --accent: #d4895a;
+  --text-primary: #f0f2f7;
+  --text-secondary: #9aa3b2;
+  --border: #252b36;
+  --primary-foreground: #07090f;
+
+  --success: #4ec9a0;
+  --warning: #e0b25a;
+  --error: #e06b6b;
+  --info: #6aa0d8;
+
+  --font-family: "Inter Variable", Inter, ui-sans-serif, system-ui, sans-serif;
+
+  --r-xs: 4px;
+  --r-sm: 6px;
+  --r-md: 8px;
+  --r-lg: 10px;
+  --r-xl: 12px;
+
+  --header-h: 60px;
+  --tabs-h: 48px;
+  --control-h: 38px;
+  --control-h-sm: 30px;
+  --control-h-lg: 44px;
+  --shell-pad: 28px;
+  --section-gap: 36px;
+  --rail-gap: 14px;
+  --card-w: 220px;
+  --content-max: 1440px;
+  --bottom-nav-h: 64px;
+
+  --motion-fast: 140ms;
+  --motion-standard: 220ms;
+  --motion-slow: 360ms;
+
+  --fs-display: clamp(2rem, 1.5rem + 1.6vw, 2.75rem);
+  --fs-h1: clamp(1.625rem, 1.35rem + 1vw, 2.25rem);
+  --fs-h2: clamp(1.25rem, 1.1rem + 0.5vw, 1.625rem);
+  --fs-section: 1.125rem;
+  --fs-body: 0.9375rem;
+  --fs-label: 0.8125rem;
+  --fs-caption: 0.6875rem;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Derived tokens — ONE mechanism, color-mix(in oklch, ...) (05 §5)    */
+/*  Declared on the same elements as the editable tokens so that       */
+/*  inline overrides from Theme Studio are picked up automatically.     */
+/* ------------------------------------------------------------------ */
+
+:root,
+[data-concept] {
+  --primary-hover: color-mix(in oklch, var(--primary) 86%, white);
+  --primary-active: color-mix(in oklch, var(--primary) 84%, black);
+  --secondary-hover: color-mix(in oklch, var(--secondary) 86%, white);
+  --accent-hover: color-mix(in oklch, var(--accent) 86%, white);
+  --surface-hover: color-mix(in oklch, var(--surface) 93%, white);
+  --surface-active: color-mix(in oklch, var(--surface-hover) 50%, var(--surface-elevated));
+  --border-strong: color-mix(in oklch, var(--border) 72%, var(--text-primary));
+  --border-active: color-mix(in oklch, var(--border) 35%, var(--primary));
+  --focus-ring: color-mix(in oklch, var(--primary) 55%, white);
+  --text-muted: color-mix(in oklch, var(--text-secondary) 84%, var(--background));
+  --text-disabled: color-mix(in oklch, var(--text-secondary) 50%, var(--background));
+  --overlay: color-mix(in oklch, var(--background) 74%, transparent);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Base                                                               */
+/* ------------------------------------------------------------------ */
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-size: var(--fs-body);
+    line-height: 1.5;
+    min-height: 100dvh;
+  }
+
+  html {
+    font-family: var(--font-family);
+    background-color: var(--background);
+  }
+
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklch, var(--primary) 35%, transparent);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Reduced motion (05 §19.1)                                          */
+/* ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Theme Studio — fixed neutral meta-UI palette (05 §21.7). Not a      */
+/*  product surface, deliberately independent of the editable tokens.  */
+/* ------------------------------------------------------------------ */
+
+.theme-studio {
+  --ts-bg: #101214;
+  --ts-surface: #15181b;
+  --ts-elevated: #1e2226;
+  --ts-border: #2b3036;
+  --ts-text: #f2f4f6;
+  --ts-muted: #9aa1aa;
+  --ts-accent: #7dd3fc;
+  --ts-error: #f87171;
+  font-family: "Inter Variable", Inter, ui-sans-serif, system-ui, sans-serif;
+  color-scheme: dark;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Shared keyframes                                                   */
+/* ------------------------------------------------------------------ */
+
+@keyframes sb-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
